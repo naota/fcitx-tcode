@@ -58,7 +58,10 @@ impl Default for InputMode {
 }
 
 type Dict = HashMap<String, Vec<String>>;
-type ConvertInfo = (usize, Vec<String>);
+struct ConvertInfo {
+    start: usize,
+    kanjis: Vec<String>,
+}
 struct FcitxTCode {
     fcitx: fcitx::FcitxInstance,
     input: fcitx::InputState,
@@ -250,14 +253,14 @@ impl FcitxTCode {
 
     fn get_coverting_txt(&self) -> (String, String) {
         assert!(self.convert_info.is_some());
-        let (pos, vec) = self.convert_info.as_ref().unwrap();
+        let info = self.convert_info.as_ref().unwrap();
         let iter = self.preedit.chars();
-        let pretxt = iter.take(*pos).collect::<String>();
-        let posttxt = if vec.len() == 1 {
-            vec[0].clone()
+        let pretxt = iter.take((*info).start).collect::<String>();
+        let posttxt = if info.kanjis.len() == 1 {
+            info.kanjis[0].clone()
         } else {
             let iter = self.preedit.chars();
-            iter.skip(*pos).collect::<String>()
+            iter.skip((*info).start).collect::<String>()
         };
 
         (pretxt, posttxt)
@@ -284,7 +287,12 @@ impl FcitxTCode {
             match self.mazegaki_convert_at(i) {
                 Err(ConvertError::InsufficientBuffer) => return None,
                 Err(ConvertError::NoMatching) => continue,
-                Ok(vec) => return Some((i, vec.clone())),
+                Ok(vec) => {
+                    return Some(ConvertInfo {
+                        start: i,
+                        kanjis: vec.clone(),
+                    })
+                }
             }
         }
         None
@@ -310,7 +318,7 @@ impl FcitxTCode {
             key::Key_space => return IRV_FLAG_BLOCK_FOLLOWING_PROCESS,
             key::Key_BackSpace => return IRV_FLAG_BLOCK_FOLLOWING_PROCESS,
             key::Key_less | key::Key_greater => {
-                let pos = self.convert_info.as_ref().map_or(0, |x| x.0);
+                let pos = self.convert_info.as_ref().map_or(0, |x| x.start);
                 let conv = if keysym == key::Key_less {
                     self.mazegaki_convert((0..pos).rev())
                 } else {
@@ -335,7 +343,7 @@ impl FcitxTCode {
                     if 20 <= *n && *n < 30 {
                         match self.convert_info {
                             None => None,
-                            Some((_, ref vec)) => match vec.get((*n - 20) as usize) {
+                            Some(ref info) => match info.kanjis.get((*n - 20) as usize) {
                                 None => None,
                                 Some(posttxt) => Some(pretxt + &posttxt),
                             },
@@ -502,37 +510,39 @@ impl IMInstance for FcitxTCode {
 
     fn get_cand_words(&mut self) -> InputReturnValue {
         assert!(self.convert_info.is_some());
+        match self.convert_info {
+            None => {
+                self.update_preedit();
+                return IRV_DISPLAY_CANDWORDS;
+            }
+            Some(ref info) => {
+                self.candidate_list.set_page_size(10);
+                self.candidate_list.set_choose(&self.select_chars);
+                //cand_list.set_choose(&"1234567890".to_string());
 
-        self.candidate_list.set_page_size(10);
-        self.candidate_list.set_choose(&self.select_chars);
-        //cand_list.set_choose(&"1234567890".to_string());
+                if info.kanjis.len() < 2 {
+                    self.update_preedit();
+                    return IRV_DISPLAY_CANDWORDS;
+                }
 
-        let kanji_vec = match self.convert_info {
-            None => panic!(""),
-            Some((_, ref vec)) => vec,
-        };
+                // cand_list.set_choose(&"dfsgaerwtq".to_string());
+                for x in info.kanjis.iter().as_ref() {
+                    let mut kanji_cand = fcitx::CandidateWord::new::<FcitxTCode, u8>(
+                        x,
+                        MSG_OTHER,
+                        None,
+                        MSG_OTHER,
+                        || println!("callback"),
+                        None,
+                        None,
+                    );
+                    self.candidate_list.append(&mut kanji_cand);
+                }
 
-        if kanji_vec.len() < 2 {
-            self.update_preedit();
-            return IRV_DISPLAY_CANDWORDS;
+                self.update_preedit();
+                IRV_DISPLAY_CANDWORDS
+            }
         }
-
-        // cand_list.set_choose(&"dfsgaerwtq".to_string());
-        for x in kanji_vec.iter().as_ref() {
-            let mut kanji_cand = fcitx::CandidateWord::new::<FcitxTCode, u8>(
-                x,
-                MSG_OTHER,
-                None,
-                MSG_OTHER,
-                || println!("callback"),
-                None,
-                None,
-            );
-            self.candidate_list.append(&mut kanji_cand);
-        }
-
-        self.update_preedit();
-        IRV_DISPLAY_CANDWORDS
     }
 }
 

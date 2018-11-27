@@ -1,0 +1,6 @@
+[package]
+name = "fcitx-sys"
+version = "0.1.0"
+authors = ["Naohiro Aota"]
+
+[dependencies]

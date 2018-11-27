@@ -31,7 +31,6 @@ use fcitx::{MSG_FIRSTCAND, MSG_HIGHLIGHT, MSG_INPUT, MSG_OTHER};
 
 declare_imclass!(TCodeIMClass, TCodeIMClass::new);
 
-#[derive(Default)]
 struct TCodeIMClass(FcitxTCode);
 impl TCodeIMClass {
     fn new(fcitx: FcitxInstance) -> Self {
@@ -60,7 +59,6 @@ impl Default for InputMode {
 
 type Dict = HashMap<String, Vec<String>>;
 type ConvertInfo = (usize, Vec<String>);
-#[derive(Default)]
 struct FcitxTCode {
     fcitx: fcitx::FcitxInstance,
     input: fcitx::InputState,

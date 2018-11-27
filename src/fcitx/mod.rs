@@ -79,14 +79,6 @@ pub struct FcitxInstance {
     instance: *mut fcitx_sys::FcitxInstance,
 }
 
-impl Default for FcitxInstance {
-    fn default() -> Self {
-        FcitxInstance {
-            instance: std::ptr::null_mut(),
-        }
-    }
-}
-
 impl FcitxInstance {
     pub fn new(handle: *mut fcitx_sys::FcitxInstance) -> Self {
         FcitxInstance { instance: handle }
@@ -224,23 +216,12 @@ macro_rules! pointer_wrapper {
                 $wrapper(ptr)
             }
         }
-
-        impl Default for $wrapper {
-            fn default() -> Self {
-                $wrapper(std::ptr::null_mut())
-            }
-        }
     };
 }
 
 // InputState
 #[derive(Clone, Copy)]
 pub struct InputState(*mut fcitx_sys::FcitxInputState);
-impl Default for InputState {
-    fn default() -> Self {
-        InputState(std::ptr::null_mut())
-    }
-}
 impl InputState {
     fn new(ptr: *mut fcitx_sys::FcitxInputState) -> Self {
         InputState(ptr)

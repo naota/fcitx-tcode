@@ -14,6 +14,7 @@ install: build
 	mkdir -p "$(FCITX_LIB_DIR)"
 	cp files/fcitx-tcode.conf $(ADDON_DIR)
 	cp files/tcode.conf $(IM_DIR)
+	strip target/release/libfcitx_tcode.so
 	cp target/release/libfcitx_tcode.so "$(FCITX_LIB_DIR)"/fcitx-tcode.so
 
 test:

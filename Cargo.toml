@@ -14,7 +14,10 @@ path = "fcitx-sys"
 
 [lib]
 name = "fcitx_tcode"
-crate-type = ["dylib"]
+crate-type = ["cdylib"]
+
+[profile.release]
+lto = true
 
 [workspace]
 members = ["fcitx-sys"]

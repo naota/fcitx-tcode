@@ -1,0 +1,20 @@
+[package]
+name = "fcitx-tcode"
+version = "0.1.0"
+authors = ["Naohiro Aota"]
+
+[dependencies]
+libc = "0.2"
+bitflags = "0.8"
+lazy_static = "1.2"
+unicode-jp = "0.3"
+
+[dependencies.fcitx-sys]
+path = "fcitx-sys"
+
+[lib]
+name = "fcitx_tcode"
+crate-type = ["dylib"]
+
+[workspace]
+members = ["fcitx-sys"]

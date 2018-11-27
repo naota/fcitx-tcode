@@ -57,10 +57,16 @@ impl Default for InputMode {
     }
 }
 
+enum ConvertMode {
+    EXACT,
+    INFLECTION,
+}
+
 type Dict = HashMap<String, Vec<String>>;
 struct ConvertInfo {
     start: usize,
     kanjis: Vec<String>,
+    mode: ConvertMode,
 }
 struct FcitxTCode {
     fcitx: fcitx::FcitxInstance,
@@ -291,6 +297,7 @@ impl FcitxTCode {
                     return Some(ConvertInfo {
                         start: i,
                         kanjis: vec.clone(),
+                        mode: ConvertMode::EXACT,
                     })
                 }
             }

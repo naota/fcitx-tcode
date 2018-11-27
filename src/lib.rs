@@ -453,41 +453,6 @@ impl FcitxTCode {
     }
 }
 
-fn parse_mazegaki_line(line: &String) -> DictionaryParseResult<(String, Vec<String>)> {
-    let mut iter0 = line.split(' ');
-    let key = iter0.next().ok_or(DictionaryParseError::NoKeyString)?;
-
-    let rest: String = iter0.collect();
-    let iter1 = rest.split_terminator('/');
-    let v: Vec<String> = iter1.skip(1).map(|x| String::from(x)).collect();
-    if v.len() == 0 {
-        Err(DictionaryParseError::NoConvertStrings)?;
-    }
-    Ok((key.to_string(), v))
-}
-#[test]
-fn test_parse_mazegaki_line() {
-    let line = "あ /亜/吾/唖/娃/阿/".to_string();
-    let key = "あ".to_string();
-    let convs = vec!["亜", "吾", "唖", "娃", "阿"]
-        .into_iter()
-        .map(|s| s.to_string())
-        .collect::<Vec<String>>();
-    assert_eq!(parse_mazegaki_line(&line).unwrap(), (key, convs));
-}
-
-fn load_mazegaki_table(filename: String) -> DictionaryParseResult<Dict> {
-    let mut dict = HashMap::new();
-    let f = File::open(filename)?;
-    let f = BufReader::new(f);
-    for line in f.lines() {
-        let line = line?;
-        let (key, convs) = parse_mazegaki_line(&line)?;
-        dict.insert(key, convs);
-    }
-    Ok(dict)
-}
-
 impl IMInstance for FcitxTCode {
     fn do_input(&mut self, keysym: KeySym, state: c_uint) -> InputReturnValue {
         // TODO: async load on init
@@ -551,6 +516,41 @@ impl IMInstance for FcitxTCode {
             }
         }
     }
+}
+
+fn parse_mazegaki_line(line: &String) -> DictionaryParseResult<(String, Vec<String>)> {
+    let mut iter0 = line.split(' ');
+    let key = iter0.next().ok_or(DictionaryParseError::NoKeyString)?;
+
+    let rest: String = iter0.collect();
+    let iter1 = rest.split_terminator('/');
+    let v: Vec<String> = iter1.skip(1).map(|x| String::from(x)).collect();
+    if v.len() == 0 {
+        Err(DictionaryParseError::NoConvertStrings)?;
+    }
+    Ok((key.to_string(), v))
+}
+#[test]
+fn test_parse_mazegaki_line() {
+    let line = "あ /亜/吾/唖/娃/阿/".to_string();
+    let key = "あ".to_string();
+    let convs = vec!["亜", "吾", "唖", "娃", "阿"]
+        .into_iter()
+        .map(|s| s.to_string())
+        .collect::<Vec<String>>();
+    assert_eq!(parse_mazegaki_line(&line).unwrap(), (key, convs));
+}
+
+fn load_mazegaki_table(filename: String) -> DictionaryParseResult<Dict> {
+    let mut dict = HashMap::new();
+    let f = File::open(filename)?;
+    let f = BufReader::new(f);
+    for line in f.lines() {
+        let line = line?;
+        let (key, convs) = parse_mazegaki_line(&line)?;
+        dict.insert(key, convs);
+    }
+    Ok(dict)
 }
 
 fn lookup_tcode(key: (KeyPos, KeyPos)) -> Option<char> {

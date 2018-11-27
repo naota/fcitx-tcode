@@ -5,17 +5,17 @@ extern crate lazy_static;
 extern crate kana;
 extern crate libc;
 
+mod convert;
 mod fcitx;
 mod keyboard;
 mod tc_table;
-mod convert;
 
 use libc::{c_int, c_uint};
 use std::collections::HashMap;
 use std::iter::Iterator;
 
-use keyboard::{KeyPos, QWERTY};
 use convert::*;
+use keyboard::{KeyPos, QWERTY};
 
 use fcitx::key::{self, KeySym};
 use fcitx::CAPACITY_PREEDIT;
@@ -204,12 +204,6 @@ impl FcitxTCode {
         self.clear_keys();
         self.candidate_list.clear();
         self.update_preedit();
-    }
-
-    fn load_mazegaki_table(&mut self, filename: String) -> DictionaryParseResult<()> {
-        let dict = load_mazegaki_table(filename)?;
-        self.mazegaki_dict = dict;
-        Ok(())
     }
 
     fn start_mazegaki_convertion(&mut self) {
@@ -421,7 +415,7 @@ impl IMInstance for FcitxTCode {
         // TODO: async load on init
         if self.mazegaki_dict.is_empty() {
             // TODO: error handling
-            self.load_mazegaki_table(MAZEGAKI_DIC.to_string()).unwrap();
+            load_mazegaki_table(MAZEGAKI_DIC.to_string(), &mut self.mazegaki_dict).unwrap();
         }
 
         // ignore control key sequence

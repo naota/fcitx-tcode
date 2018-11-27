@@ -1,10 +1,10 @@
-use std::{error, fmt};
 use std::collections::HashMap;
 use std::fs::File;
 use std::io::prelude::*;
 use std::io::BufReader;
+use std::{error, fmt};
 
-use ::keyboard::KeyPos;
+use keyboard::KeyPos;
 
 pub type Dict = HashMap<String, Vec<String>>;
 
@@ -64,8 +64,7 @@ fn test_parse_mazegaki_line() {
     assert_eq!(parse_mazegaki_line(&line).unwrap(), (key, convs));
 }
 
-pub fn load_mazegaki_table(filename: String) -> DictionaryParseResult<Dict> {
-    let mut dict = HashMap::new();
+pub fn load_mazegaki_table(filename: String, dict: &mut Dict) -> DictionaryParseResult<()> {
     let f = File::open(filename)?;
     let f = BufReader::new(f);
     for line in f.lines() {
@@ -73,7 +72,7 @@ pub fn load_mazegaki_table(filename: String) -> DictionaryParseResult<Dict> {
         let (key, convs) = parse_mazegaki_line(&line)?;
         dict.insert(key, convs);
     }
-    Ok(dict)
+    Ok(())
 }
 
 pub fn lookup_tcode(key: (KeyPos, KeyPos)) -> Option<char> {

@@ -206,11 +206,14 @@ impl FcitxTCode {
         self.update_preedit();
     }
 
-    fn start_mazegaki_convertion(&mut self) {
+    fn start_mazegaki_convertion(&mut self) -> InputReturnValue {
         let conv = self.mazegaki_convert(0..);
         if conv.is_some() {
             self.convert_info = conv;
             self.mode = InputMode::CONVERT;
+            IRV_DISPLAY_CANDWORDS
+        } else {
+            IRV_DISPLAY_MESSAGE
         }
     }
 
@@ -396,8 +399,7 @@ impl FcitxTCode {
                     self.kana_count = 0;
                     if self.is_hotkey((key::Key_f, key::Key_j), *k) {
                         self.last_key = None;
-                        self.start_mazegaki_convertion();
-                        IRV_DISPLAY_CANDWORDS
+                        self.start_mazegaki_convertion()
                     } else {
                         self.push_key(*k)
                             .map(|c| self.fcitx.commit_string(&c.to_string()));

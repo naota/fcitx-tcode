@@ -13,7 +13,7 @@ enum DictionaryParseError {
     NoKeyString,
     NoConvertStrings,
 }
-pub type DictionaryParseResult<T> = std::result::Result<T, Box<error::Error>>;
+pub type DictionaryParseResult<T> = std::result::Result<T, Box<dyn error::Error>>;
 
 impl fmt::Display for DictionaryParseError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

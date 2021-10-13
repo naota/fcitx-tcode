@@ -69,7 +69,7 @@ macro_rules! declare_imclass {
 // IMClass
 pub type _IMClass = fcitx_sys::FcitxIMClass;
 pub trait IMClass {
-    fn create(&mut self, FcitxInstance);
+    fn create(&mut self, fcitx: FcitxInstance);
     fn destroy(&mut self);
 }
 

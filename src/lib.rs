@@ -38,20 +38,20 @@ impl fcitx::IMClass for TCodeIMClass {
 
 #[derive(PartialEq)]
 enum InputMode {
-    DIRECT,
-    TCODE,
-    CONVERT,
+    Direct,
+    TCode,
+    Convert,
 }
 impl Default for InputMode {
     fn default() -> InputMode {
-        InputMode::DIRECT
+        InputMode::Direct
     }
 }
 
 enum ConvertMode {
-    EXACT,
+    Exact,
     #[allow(dead_code)]
-    INFLECTION,
+    Inflection,
 }
 
 struct ConvertInfo {
@@ -91,7 +91,7 @@ impl FcitxTCode {
             preedit_backup: String::with_capacity(buffer_size),
             last_key: None,
             kana_count: 0,
-            mode: InputMode::DIRECT,
+            mode: InputMode::Direct,
             last_is_space: false,
             mazegaki_dict: HashMap::new(),
             convert_info: None,
@@ -125,9 +125,9 @@ impl FcitxTCode {
         self.fcitx.clean_input_window_up();
 
         let cursor_pos = match self.mode {
-            InputMode::DIRECT => self.set_preedit_direct(),
-            InputMode::TCODE => self.set_preedit_tcode(),
-            InputMode::CONVERT => self.set_preedit_converting(),
+            InputMode::Direct => self.set_preedit_direct(),
+            InputMode::TCode => self.set_preedit_tcode(),
+            InputMode::Convert => self.set_preedit_converting(),
         };
 
         let input = &self.input;
@@ -207,7 +207,7 @@ impl FcitxTCode {
         let conv = self.mazegaki_convert(0..);
         if conv.is_some() {
             self.convert_info = conv;
-            self.mode = InputMode::CONVERT;
+            self.mode = InputMode::Convert;
             InputReturnValue::DISPLAY_CANDWORDS
         } else {
             InputReturnValue::DISPLAY_MESSAGE
@@ -253,7 +253,7 @@ impl FcitxTCode {
                     return Some(ConvertInfo {
                         start: i,
                         kanjis: vec.clone(),
-                        mode: ConvertMode::EXACT,
+                        mode: ConvertMode::Exact,
                     })
                 }
             }
@@ -264,7 +264,7 @@ impl FcitxTCode {
     fn do_input_direct(&mut self, keysym: KeySym, _state: c_uint) -> InputReturnValue {
         // electric switching
         if self.last_is_space && keysym == key::Key_comma {
-            self.mode = InputMode::TCODE;
+            self.mode = InputMode::TCode;
             self.fcitx
                 .forward_key(fcitx::KeyEvent::PressKey, key::Key_BackSpace, 0);
             return InputReturnValue::FLAG_BLOCK_FOLLOWING_PROCESS;
@@ -324,7 +324,7 @@ impl FcitxTCode {
 
         match to_commit {
             None => {
-                self.mode = InputMode::TCODE;
+                self.mode = InputMode::TCode;
                 let (pretxt, posttxt) = self.get_coverting_txt();
                 self.preedit = pretxt + &posttxt;
                 self.candidate_list.clear();
@@ -335,7 +335,7 @@ impl FcitxTCode {
                 //self.fcitx.commit_string(&txt);
                 self.preedit = txt;
 
-                self.mode = InputMode::TCODE;
+                self.mode = InputMode::TCode;
                 //self.clear_keys();
                 self.candidate_list.clear();
                 self.update_preedit();
@@ -366,7 +366,7 @@ impl FcitxTCode {
             }
             // electric switching
             key::Key_space => {
-                self.mode = InputMode::DIRECT;
+                self.mode = InputMode::Direct;
                 self.fcitx.commit_string(&self.preedit);
                 self.reset();
                 InputReturnValue::FLAG_BLOCK_FOLLOWING_PROCESS
@@ -432,9 +432,9 @@ impl IMInstance for FcitxTCode {
         }
 
         match self.mode {
-            InputMode::DIRECT => self.do_input_direct(keysym, state),
-            InputMode::CONVERT => self.do_input_convert(keysym, state),
-            InputMode::TCODE => self.do_input_tcode(keysym, state),
+            InputMode::Direct => self.do_input_direct(keysym, state),
+            InputMode::Convert => self.do_input_convert(keysym, state),
+            InputMode::TCode => self.do_input_tcode(keysym, state),
         }
     }
 

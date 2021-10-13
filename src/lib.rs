@@ -82,8 +82,8 @@ impl FcitxTCode {
         let buffer_size = Self::MAX_BYTES_PER_CHAR * Self::MAX_BUFFER_CHARS;
         let input = fcitx.input_state();
         Self {
-            fcitx: fcitx,
-            input: input,
+            fcitx,
+            input,
             candidate_list: input.candidate_list(),
             // TODO: query QWERTY table
             select_chars: "asdfghjkl;".to_string(),

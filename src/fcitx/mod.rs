@@ -344,80 +344,80 @@ pub trait IMInstance {
 // re-export constants
 
 bitflags! {
-    pub flags InputReturnValue: fcitx_sys::INPUT_RETURN_VALUE {
-        const IRV_TO_PROCESS = fcitx_sys::_INPUT_RETURN_VALUE_IRV_TO_PROCESS,
-        const IRV_FLAG_BLOCK_FOLLOWING_PROCESS = fcitx_sys::_INPUT_RETURN_VALUE_IRV_FLAG_BLOCK_FOLLOWING_PROCESS,
-        const IRV_FLAG_FORWARD_KEY = fcitx_sys::_INPUT_RETURN_VALUE_IRV_FLAG_FORWARD_KEY,
-        const IRV_FLAG_RESET_INPUT = fcitx_sys::_INPUT_RETURN_VALUE_IRV_FLAG_RESET_INPUT,
-        const IRV_FLAG_PENDING_COMMIT_STRING = fcitx_sys::_INPUT_RETURN_VALUE_IRV_FLAG_PENDING_COMMIT_STRING,
-        const IRV_FLAG_UPDATE_INPUT_WINDOW = fcitx_sys::_INPUT_RETURN_VALUE_IRV_FLAG_UPDATE_INPUT_WINDOW,
-        const IRV_FLAG_UPDATE_CANDIDATE_WORDS = fcitx_sys::_INPUT_RETURN_VALUE_IRV_FLAG_UPDATE_CANDIDATE_WORDS,
-        const IRV_FLAG_ENG = fcitx_sys::_INPUT_RETURN_VALUE_IRV_FLAG_ENG,
-        const IRV_FLAG_PUNC = fcitx_sys::_INPUT_RETURN_VALUE_IRV_FLAG_PUNC,
-        const IRV_FLAG_DISPLAY_LAST = fcitx_sys::_INPUT_RETURN_VALUE_IRV_FLAG_DISPLAY_LAST,
-        const IRV_FLAG_DO_PHRASE_TIPS = fcitx_sys::_INPUT_RETURN_VALUE_IRV_FLAG_DO_PHRASE_TIPS,
-        const IRV_DONOT_PROCESS = fcitx_sys::_INPUT_RETURN_VALUE_IRV_DONOT_PROCESS,
-        const IRV_COMMIT_STRING = fcitx_sys::_INPUT_RETURN_VALUE_IRV_COMMIT_STRING,
-        const IRV_DO_NOTHING = fcitx_sys::_INPUT_RETURN_VALUE_IRV_DO_NOTHING,
-        const IRV_CLEAN = fcitx_sys::_INPUT_RETURN_VALUE_IRV_CLEAN,
-        const IRV_COMMIT_STRING_REMIND = fcitx_sys::_INPUT_RETURN_VALUE_IRV_COMMIT_STRING_REMIND,
-        const IRV_DISPLAY_CANDWORDS = fcitx_sys::_INPUT_RETURN_VALUE_IRV_DISPLAY_CANDWORDS,
-        const IRV_DONOT_PROCESS_CLEAN = fcitx_sys::_INPUT_RETURN_VALUE_IRV_DONOT_PROCESS_CLEAN,
-        const IRV_COMMIT_STRING_NEXT = fcitx_sys::_INPUT_RETURN_VALUE_IRV_COMMIT_STRING_NEXT,
-        const IRV_DISPLAY_MESSAGE = fcitx_sys::_INPUT_RETURN_VALUE_IRV_DISPLAY_MESSAGE,
-        const IRV_ENG = fcitx_sys::_INPUT_RETURN_VALUE_IRV_ENG,
-        const IRV_PUNC = fcitx_sys::_INPUT_RETURN_VALUE_IRV_PUNC,
-        const IRV_DISPLAY_LAST = fcitx_sys::_INPUT_RETURN_VALUE_IRV_DISPLAY_LAST,
+    pub struct InputReturnValue: fcitx_sys::INPUT_RETURN_VALUE {
+        const TO_PROCESS = fcitx_sys::_INPUT_RETURN_VALUE_IRV_TO_PROCESS;
+        const FLAG_BLOCK_FOLLOWING_PROCESS = fcitx_sys::_INPUT_RETURN_VALUE_IRV_FLAG_BLOCK_FOLLOWING_PROCESS;
+        const FLAG_FORWARD_KEY = fcitx_sys::_INPUT_RETURN_VALUE_IRV_FLAG_FORWARD_KEY;
+        const FLAG_RESET_INPUT = fcitx_sys::_INPUT_RETURN_VALUE_IRV_FLAG_RESET_INPUT;
+        const FLAG_PENDING_COMMIT_STRING = fcitx_sys::_INPUT_RETURN_VALUE_IRV_FLAG_PENDING_COMMIT_STRING;
+        const FLAG_UPDATE_INPUT_WINDOW = fcitx_sys::_INPUT_RETURN_VALUE_IRV_FLAG_UPDATE_INPUT_WINDOW;
+        const FLAG_UPDATE_CANDIDATE_WORDS = fcitx_sys::_INPUT_RETURN_VALUE_IRV_FLAG_UPDATE_CANDIDATE_WORDS;
+        const FLAG_ENG = fcitx_sys::_INPUT_RETURN_VALUE_IRV_FLAG_ENG;
+        const FLAG_PUNC = fcitx_sys::_INPUT_RETURN_VALUE_IRV_FLAG_PUNC;
+        const FLAG_DISPLAY_LAST = fcitx_sys::_INPUT_RETURN_VALUE_IRV_FLAG_DISPLAY_LAST;
+        const FLAG_DO_PHRASE_TIPS = fcitx_sys::_INPUT_RETURN_VALUE_IRV_FLAG_DO_PHRASE_TIPS;
+        const DONOT_PROCESS = fcitx_sys::_INPUT_RETURN_VALUE_IRV_DONOT_PROCESS;
+        const COMMIT_STRING = fcitx_sys::_INPUT_RETURN_VALUE_IRV_COMMIT_STRING;
+        const DO_NOTHING = fcitx_sys::_INPUT_RETURN_VALUE_IRV_DO_NOTHING;
+        const CLEAN = fcitx_sys::_INPUT_RETURN_VALUE_IRV_CLEAN;
+        const COMMIT_STRING_REMIND = fcitx_sys::_INPUT_RETURN_VALUE_IRV_COMMIT_STRING_REMIND;
+        const DISPLAY_CANDWORDS = fcitx_sys::_INPUT_RETURN_VALUE_IRV_DISPLAY_CANDWORDS;
+        const DONOT_PROCESS_CLEAN = fcitx_sys::_INPUT_RETURN_VALUE_IRV_DONOT_PROCESS_CLEAN;
+        const COMMIT_STRING_NEXT = fcitx_sys::_INPUT_RETURN_VALUE_IRV_COMMIT_STRING_NEXT;
+        const DISPLAY_MESSAGE = fcitx_sys::_INPUT_RETURN_VALUE_IRV_DISPLAY_MESSAGE;
+        const ENG = fcitx_sys::_INPUT_RETURN_VALUE_IRV_ENG;
+        const PUNC = fcitx_sys::_INPUT_RETURN_VALUE_IRV_PUNC;
+        const DISPLAY_LAST = fcitx_sys::_INPUT_RETURN_VALUE_IRV_DISPLAY_LAST;
     }
 }
 
 bitflags! {
-    pub flags CapacityFlags: fcitx_sys::FcitxCapacityFlags {
-        const CAPACITY_NONE                      = fcitx_sys::_FcitxCapacityFlags_CAPACITY_NONE,
-        const CAPACITY_CLIENT_SIDE_UI            = fcitx_sys::_FcitxCapacityFlags_CAPACITY_CLIENT_SIDE_UI,
-        const CAPACITY_PREEDIT                   = fcitx_sys::_FcitxCapacityFlags_CAPACITY_PREEDIT,
-        const CAPACITY_CLIENT_SIDE_CONTROL_STATE = fcitx_sys::_FcitxCapacityFlags_CAPACITY_CLIENT_SIDE_CONTROL_STATE,
-        const CAPACITY_PASSWORD                  = fcitx_sys::_FcitxCapacityFlags_CAPACITY_PASSWORD,
-        const CAPACITY_FORMATTED_PREEDIT         = fcitx_sys::_FcitxCapacityFlags_CAPACITY_FORMATTED_PREEDIT,
-        const CAPACITY_CLIENT_UNFOCUS_COMMIT     = fcitx_sys::_FcitxCapacityFlags_CAPACITY_CLIENT_UNFOCUS_COMMIT,
-        const CAPACITY_SURROUNDING_TEXT          = fcitx_sys::_FcitxCapacityFlags_CAPACITY_SURROUNDING_TEXT,
-        const CAPACITY_EMAIL                     = fcitx_sys::_FcitxCapacityFlags_CAPACITY_EMAIL,
-        const CAPACITY_DIGIT                     = fcitx_sys::_FcitxCapacityFlags_CAPACITY_DIGIT,
-        const CAPACITY_UPPERCASE                 = fcitx_sys::_FcitxCapacityFlags_CAPACITY_UPPERCASE,
-        const CAPACITY_LOWERCASE                 = fcitx_sys::_FcitxCapacityFlags_CAPACITY_LOWERCASE,
-        const CAPACITY_NOAUTOUPPERCASE           = fcitx_sys::_FcitxCapacityFlags_CAPACITY_NOAUTOUPPERCASE,
-        const CAPACITY_URL                       = fcitx_sys::_FcitxCapacityFlags_CAPACITY_URL,
-        const CAPACITY_DIALABLE                  = fcitx_sys::_FcitxCapacityFlags_CAPACITY_DIALABLE,
-        const CAPACITY_NUMBER                    = fcitx_sys::_FcitxCapacityFlags_CAPACITY_NUMBER,
-        const CAPACITY_NO_ON_SCREEN_KEYBOARD     = fcitx_sys::_FcitxCapacityFlags_CAPACITY_NO_ON_SCREEN_KEYBOARD,
-        const CAPACITY_SPELLCHECK                = fcitx_sys::_FcitxCapacityFlags_CAPACITY_SPELLCHECK,
-        const CAPACITY_NO_SPELLCHECK             = fcitx_sys::_FcitxCapacityFlags_CAPACITY_NO_SPELLCHECK,
-        const CAPACITY_WORD_COMPLETION           = fcitx_sys::_FcitxCapacityFlags_CAPACITY_WORD_COMPLETION,
-        const CAPACITY_UPPERCASE_WORDS           = fcitx_sys::_FcitxCapacityFlags_CAPACITY_UPPERCASE_WORDS,
-        const CAPACITY_UPPERCASE_SENTENCES       = fcitx_sys::_FcitxCapacityFlags_CAPACITY_UPPERCASE_SENTENCES,
-        const CAPACITY_ALPHA                     = fcitx_sys::_FcitxCapacityFlags_CAPACITY_ALPHA,
-        const CAPACITY_NAME                      = fcitx_sys::_FcitxCapacityFlags_CAPACITY_NAME,
-        const CAPACITY_GET_IM_INFO_ON_FOCUS      = fcitx_sys::_FcitxCapacityFlags_CAPACITY_GET_IM_INFO_ON_FOCUS,
-        const CAPACITY_RELATIVE_CURSOR_RECT      = fcitx_sys::_FcitxCapacityFlags_CAPACITY_RELATIVE_CURSOR_RECT,
+    pub struct CapacityFlags: fcitx_sys::FcitxCapacityFlags {
+        const NONE                      = fcitx_sys::_FcitxCapacityFlags_CAPACITY_NONE;
+        const CLIENT_SIDE_UI            = fcitx_sys::_FcitxCapacityFlags_CAPACITY_CLIENT_SIDE_UI;
+        const PREEDIT                   = fcitx_sys::_FcitxCapacityFlags_CAPACITY_PREEDIT;
+        const CLIENT_SIDE_CONTROL_STATE = fcitx_sys::_FcitxCapacityFlags_CAPACITY_CLIENT_SIDE_CONTROL_STATE;
+        const PASSWORD                  = fcitx_sys::_FcitxCapacityFlags_CAPACITY_PASSWORD;
+        const FORMATTED_PREEDIT         = fcitx_sys::_FcitxCapacityFlags_CAPACITY_FORMATTED_PREEDIT;
+        const CLIENT_UNFOCUS_COMMIT     = fcitx_sys::_FcitxCapacityFlags_CAPACITY_CLIENT_UNFOCUS_COMMIT;
+        const SURROUNDING_TEXT          = fcitx_sys::_FcitxCapacityFlags_CAPACITY_SURROUNDING_TEXT;
+        const EMAIL                     = fcitx_sys::_FcitxCapacityFlags_CAPACITY_EMAIL;
+        const DIGIT                     = fcitx_sys::_FcitxCapacityFlags_CAPACITY_DIGIT;
+        const UPPERCASE                 = fcitx_sys::_FcitxCapacityFlags_CAPACITY_UPPERCASE;
+        const LOWERCASE                 = fcitx_sys::_FcitxCapacityFlags_CAPACITY_LOWERCASE;
+        const NOAUTOUPPERCASE           = fcitx_sys::_FcitxCapacityFlags_CAPACITY_NOAUTOUPPERCASE;
+        const URL                       = fcitx_sys::_FcitxCapacityFlags_CAPACITY_URL;
+        const DIALABLE                  = fcitx_sys::_FcitxCapacityFlags_CAPACITY_DIALABLE;
+        const NUMBER                    = fcitx_sys::_FcitxCapacityFlags_CAPACITY_NUMBER;
+        const NO_ON_SCREEN_KEYBOARD     = fcitx_sys::_FcitxCapacityFlags_CAPACITY_NO_ON_SCREEN_KEYBOARD;
+        const SPELLCHECK                = fcitx_sys::_FcitxCapacityFlags_CAPACITY_SPELLCHECK;
+        const NO_SPELLCHECK             = fcitx_sys::_FcitxCapacityFlags_CAPACITY_NO_SPELLCHECK;
+        const WORD_COMPLETION           = fcitx_sys::_FcitxCapacityFlags_CAPACITY_WORD_COMPLETION;
+        const UPPERCASE_WORDS           = fcitx_sys::_FcitxCapacityFlags_CAPACITY_UPPERCASE_WORDS;
+        const UPPERCASE_SENTENCES       = fcitx_sys::_FcitxCapacityFlags_CAPACITY_UPPERCASE_SENTENCES;
+        const ALPHA                     = fcitx_sys::_FcitxCapacityFlags_CAPACITY_ALPHA;
+        const NAME                      = fcitx_sys::_FcitxCapacityFlags_CAPACITY_NAME;
+        const GET_IM_INFO_ON_FOCUS      = fcitx_sys::_FcitxCapacityFlags_CAPACITY_GET_IM_INFO_ON_FOCUS;
+        const RELATIVE_CURSOR_RECT      = fcitx_sys::_FcitxCapacityFlags_CAPACITY_RELATIVE_CURSOR_RECT;
     }
 }
 
 bitflags! {
-    pub flags MessageType: fcitx_sys::FcitxMessageType {
-        const MSG_TYPE_FIRST                = fcitx_sys::_FcitxMessageType_MSG_TYPE_FIRST,
-        const MSG_TYPE_LAST                 = fcitx_sys::_FcitxMessageType_MSG_TYPE_LAST,
-        const MSG_TIPS                      = fcitx_sys::_FcitxMessageType_MSG_TIPS,
-        const MSG_INPUT                     = fcitx_sys::_FcitxMessageType_MSG_INPUT,
-        const MSG_INDEX                     = fcitx_sys::_FcitxMessageType_MSG_INDEX,
-        const MSG_CANDIATE_CURSOR           = fcitx_sys::_FcitxMessageType_MSG_CANDIATE_CURSOR,
-        const MSG_FIRSTCAND                 = fcitx_sys::_FcitxMessageType_MSG_FIRSTCAND,
-        const MSG_USERPHR                   = fcitx_sys::_FcitxMessageType_MSG_USERPHR,
-        const MSG_CODE                      = fcitx_sys::_FcitxMessageType_MSG_CODE,
-        const MSG_OTHER                     = fcitx_sys::_FcitxMessageType_MSG_OTHER,
-        const MSG_NOUNDERLINE               = fcitx_sys::_FcitxMessageType_MSG_NOUNDERLINE,
-        const MSG_HIGHLIGHT                 = fcitx_sys::_FcitxMessageType_MSG_HIGHLIGHT,
-        const MSG_DONOT_COMMIT_WHEN_UNFOCUS = fcitx_sys::_FcitxMessageType_MSG_DONOT_COMMIT_WHEN_UNFOCUS,
-        const MSG_REGULAR_MASK              = fcitx_sys::_FcitxMessageType_MSG_REGULAR_MASK,
+    pub struct MessageType: fcitx_sys::FcitxMessageType {
+        const TYPE_FIRST                = fcitx_sys::_FcitxMessageType_MSG_TYPE_FIRST;
+        const TYPE_LAST                 = fcitx_sys::_FcitxMessageType_MSG_TYPE_LAST;
+        const TIPS                      = fcitx_sys::_FcitxMessageType_MSG_TIPS;
+        const INPUT                     = fcitx_sys::_FcitxMessageType_MSG_INPUT;
+        const INDEX                     = fcitx_sys::_FcitxMessageType_MSG_INDEX;
+        const CANDIATE_CURSOR           = fcitx_sys::_FcitxMessageType_MSG_CANDIATE_CURSOR;
+        const FIRSTCAND                 = fcitx_sys::_FcitxMessageType_MSG_FIRSTCAND;
+        const USERPHR                   = fcitx_sys::_FcitxMessageType_MSG_USERPHR;
+        const CODE                      = fcitx_sys::_FcitxMessageType_MSG_CODE;
+        const OTHER                     = fcitx_sys::_FcitxMessageType_MSG_OTHER;
+        const NOUNDERLINE               = fcitx_sys::_FcitxMessageType_MSG_NOUNDERLINE;
+        const HIGHLIGHT                 = fcitx_sys::_FcitxMessageType_MSG_HIGHLIGHT;
+        const DONOT_COMMIT_WHEN_UNFOCUS = fcitx_sys::_FcitxMessageType_MSG_DONOT_COMMIT_WHEN_UNFOCUS;
+        const REGULAR_MASK              = fcitx_sys::_FcitxMessageType_MSG_REGULAR_MASK;
     }
 }
 

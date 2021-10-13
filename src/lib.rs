@@ -18,13 +18,7 @@ use convert::*;
 use keyboard::{KeyPos, QWERTY};
 
 use fcitx::key::{self, KeySym};
-use fcitx::CAPACITY_PREEDIT;
-use fcitx::{FcitxInstance, IMClass, IMInstance, InputReturnValue};
-use fcitx::{
-    IRV_DISPLAY_CANDWORDS, IRV_DISPLAY_MESSAGE, IRV_FLAG_BLOCK_FOLLOWING_PROCESS,
-    IRV_FLAG_FORWARD_KEY,
-};
-use fcitx::{MSG_FIRSTCAND, MSG_HIGHLIGHT, MSG_INPUT, MSG_OTHER};
+use fcitx::{CapacityFlags, FcitxInstance, IMClass, IMInstance, InputReturnValue, MessageType};
 
 declare_imclass!(TCodeIMClass, TCodeIMClass::new);
 
@@ -115,7 +109,7 @@ impl FcitxTCode {
     fn support_client_preedit(&self) -> bool {
         self.fcitx
             .current_input_context()
-            .map_or(false, |ic| ic.caps(CAPACITY_PREEDIT))
+            .map_or(false, |ic| ic.caps(CapacityFlags::PREEDIT))
     }
 
     fn preedit_target(&self) -> fcitx::Messages {
@@ -149,7 +143,7 @@ impl FcitxTCode {
     fn set_preedit_tcode(&self) -> usize {
         let txt = &self.preedit;
         if !txt.is_empty() {
-            self.preedit_target().add_message_at_last(MSG_INPUT, txt);
+            self.preedit_target().add_message_at_last(MessageType::INPUT, txt);
         }
         txt.len()
     }
@@ -161,9 +155,9 @@ impl FcitxTCode {
 
         let cursor_pos = pretxt.len();
         if cursor_pos > 0 {
-            target.add_message_at_last(MSG_INPUT, &pretxt)
+            target.add_message_at_last(MessageType::INPUT, &pretxt)
         }
-        target.add_message_at_last(MSG_FIRSTCAND | MSG_HIGHLIGHT, &posttxt);
+        target.add_message_at_last(MessageType::FIRSTCAND | MessageType::HIGHLIGHT, &posttxt);
 
         pretxt.len()
     }
@@ -213,9 +207,9 @@ impl FcitxTCode {
         if conv.is_some() {
             self.convert_info = conv;
             self.mode = InputMode::CONVERT;
-            IRV_DISPLAY_CANDWORDS
+            InputReturnValue::DISPLAY_CANDWORDS
         } else {
-            IRV_DISPLAY_MESSAGE
+            InputReturnValue::DISPLAY_MESSAGE
         }
     }
 
@@ -273,19 +267,19 @@ impl FcitxTCode {
             self.mode = InputMode::TCODE;
             self.fcitx
                 .forward_key(fcitx::KeyEvent::PressKey, key::Key_BackSpace, 0);
-            return IRV_FLAG_BLOCK_FOLLOWING_PROCESS;
+            return InputReturnValue::FLAG_BLOCK_FOLLOWING_PROCESS;
         }
 
         self.last_is_space = keysym == key::Key_space;
-        return IRV_FLAG_FORWARD_KEY;
+        return InputReturnValue::FLAG_FORWARD_KEY;
     }
 
     fn do_input_convert(&mut self, keysym: KeySym, _state: c_uint) -> InputReturnValue {
         // hot key
         match keysym {
             // TODO: page move
-            key::Key_space => return IRV_FLAG_BLOCK_FOLLOWING_PROCESS,
-            key::Key_BackSpace => return IRV_FLAG_BLOCK_FOLLOWING_PROCESS,
+            key::Key_space => return InputReturnValue::FLAG_BLOCK_FOLLOWING_PROCESS,
+            key::Key_BackSpace => return InputReturnValue::FLAG_BLOCK_FOLLOWING_PROCESS,
             key::Key_less | key::Key_greater => {
                 let pos = self.convert_info.as_ref().map_or(0, |x| x.start);
                 let conv = if keysym == key::Key_less {
@@ -295,9 +289,9 @@ impl FcitxTCode {
                 };
                 if conv.is_some() {
                     self.convert_info = conv;
-                    return IRV_DISPLAY_CANDWORDS;
+                    return InputReturnValue::DISPLAY_CANDWORDS;
                 }
-                return IRV_FLAG_BLOCK_FOLLOWING_PROCESS;
+                return InputReturnValue::FLAG_BLOCK_FOLLOWING_PROCESS;
             }
             _ => (),
         };
@@ -342,7 +336,7 @@ impl FcitxTCode {
                 //self.clear_keys();
                 self.candidate_list.clear();
                 self.update_preedit();
-                IRV_DISPLAY_MESSAGE
+                InputReturnValue::DISPLAY_MESSAGE
             }
         }
     }
@@ -355,16 +349,16 @@ impl FcitxTCode {
                 if self.last_key.is_some() {
                     // delete invisible input char
                     self.last_key = None;
-                    return IRV_DISPLAY_MESSAGE;
+                    return InputReturnValue::DISPLAY_MESSAGE;
                 }
 
                 if !self.preedit.is_empty() {
                     // delete one character from preedit
                     self.preedit.pop();
                     self.update_preedit();
-                    IRV_DISPLAY_MESSAGE
+                    InputReturnValue::DISPLAY_MESSAGE
                 } else {
-                    IRV_FLAG_FORWARD_KEY
+                    InputReturnValue::FLAG_FORWARD_KEY
                 }
             }
             // electric switching
@@ -372,7 +366,7 @@ impl FcitxTCode {
                 self.mode = InputMode::DIRECT;
                 self.fcitx.commit_string(&self.preedit);
                 self.reset();
-                IRV_FLAG_BLOCK_FOLLOWING_PROCESS
+                InputReturnValue::FLAG_BLOCK_FOLLOWING_PROCESS
             }
             key::Key_percent => {
                 self.kana_count += 1;
@@ -388,14 +382,14 @@ impl FcitxTCode {
                 let (pre, post) = split_char_at(&self.preedit, start);
                 self.preedit = pre + &kana::hira2kata(&post);
                 self.update_preedit();
-                IRV_DISPLAY_MESSAGE
+                InputReturnValue::DISPLAY_MESSAGE
             }
             // TODO: handle cursor keys
             _ => match QWERTY.get(&keysym) {
                 None => {
                     self.fcitx.commit_string(&self.preedit);
                     self.reset();
-                    IRV_FLAG_FORWARD_KEY
+                    InputReturnValue::FLAG_FORWARD_KEY
                 }
                 Some(k) => {
                     self.kana_count = 0;
@@ -406,7 +400,7 @@ impl FcitxTCode {
                         self.push_key(*k)
                             .map(|c| self.fcitx.commit_string(&c.to_string()));
                         self.update_preedit();
-                        IRV_DISPLAY_MESSAGE
+                        InputReturnValue::DISPLAY_MESSAGE
                     }
                 }
             },
@@ -427,11 +421,11 @@ impl IMInstance for FcitxTCode {
         if (state & mask) != 0 {
             self.fcitx.commit_string(&self.preedit);
             self.reset();
-            return IRV_FLAG_FORWARD_KEY;
+            return InputReturnValue::FLAG_FORWARD_KEY;
         }
 
         if key::Key_Shift_L <= keysym && keysym <= key::Key_Hyper_R {
-            return IRV_FLAG_FORWARD_KEY;
+            return InputReturnValue::FLAG_FORWARD_KEY;
         }
 
         match self.mode {
@@ -446,7 +440,7 @@ impl IMInstance for FcitxTCode {
         match self.convert_info {
             None => {
                 self.update_preedit();
-                return IRV_DISPLAY_CANDWORDS;
+                return InputReturnValue::DISPLAY_CANDWORDS;
             }
             Some(ref info) => {
                 self.candidate_list.set_page_size(10);
@@ -455,16 +449,16 @@ impl IMInstance for FcitxTCode {
 
                 if info.kanjis.len() < 2 {
                     self.update_preedit();
-                    return IRV_DISPLAY_CANDWORDS;
+                    return InputReturnValue::DISPLAY_CANDWORDS;
                 }
 
                 // cand_list.set_choose(&"dfsgaerwtq".to_string());
                 for x in info.kanjis.iter().as_ref() {
                     let mut kanji_cand = fcitx::CandidateWord::new::<FcitxTCode, u8>(
                         x,
-                        MSG_OTHER,
+                        MessageType::OTHER,
                         None,
-                        MSG_OTHER,
+                        MessageType::OTHER,
                         || println!("callback"),
                         None,
                         None,
@@ -473,7 +467,7 @@ impl IMInstance for FcitxTCode {
                 }
 
                 self.update_preedit();
-                IRV_DISPLAY_CANDWORDS
+                InputReturnValue::DISPLAY_CANDWORDS
             }
         }
     }

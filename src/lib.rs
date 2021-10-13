@@ -236,8 +236,7 @@ impl FcitxTCode {
             return Err(ConvertError::InsufficientBuffer);
         }
         self.mazegaki_dict
-            .get(&txt)
-            .map(|x| x.clone())
+            .get(&txt).cloned()
             .ok_or(ConvertError::NoMatching)
     }
 

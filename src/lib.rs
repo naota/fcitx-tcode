@@ -306,7 +306,7 @@ impl FcitxTCode {
         let to_commit = match keysym {
             key::Key_Return => Some(pretxt + &posttxt),
             // TODO: rewrite
-            key::Key_a...key::Key_z | key::Key_semicolon => match QWERTY.get(&keysym) {
+            key::Key_a..=key::Key_z | key::Key_semicolon => match QWERTY.get(&keysym) {
                 None => None,
                 Some(n) => {
                     if 20 <= *n && *n < 30 {

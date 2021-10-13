@@ -400,8 +400,9 @@ impl FcitxTCode {
                         self.last_key = None;
                         self.start_mazegaki_convertion()
                     } else {
-                        self.push_key(*k)
-                            .map(|c| self.fcitx.commit_string(&c.to_string()));
+                        if let Some(c) = self.push_key(*k) {
+                            self.fcitx.commit_string(&c.to_string())
+                        }
                         self.update_preedit();
                         InputReturnValue::DISPLAY_MESSAGE
                     }

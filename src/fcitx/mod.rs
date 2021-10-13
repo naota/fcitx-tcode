@@ -110,13 +110,13 @@ impl FcitxInstance {
         }
     }
 
-    pub fn commit_string(&self, txt: &String) {
+    pub fn commit_string(&self, txt: &str) {
         if txt.is_empty() {
             return
         }
 
         let handle = self.instance;
-        let cstr = CString::new((*txt).clone()).unwrap();
+        let cstr = CString::new(txt).unwrap();
         unsafe {
             let ic = fcitx_sys::FcitxInstanceGetCurrentIC(handle);
             fcitx_sys::FcitxInstanceCommitString(handle, ic, cstr.as_ptr());
@@ -270,9 +270,9 @@ impl CandidateWordList {
     void_func_wrapper!(set_page_size, 0, FcitxCandidateWordSetPageSize, size, c_int);
     void_func_wrapper!(clear, 0, FcitxCandidateWordReset);
 
-    pub fn set_choose(&self, choose: &String) {
+    pub fn set_choose(&self, choose: &str) {
         let handle = self.0;
-        let cstr = CString::new((*choose).clone()).unwrap();
+        let cstr = CString::new(choose).unwrap();
         unsafe {
             fcitx_sys::FcitxCandidateWordSetChoose(handle, cstr.as_ptr());
         }
@@ -290,7 +290,7 @@ impl CandidateWordList {
 pub struct CandidateWord(fcitx_sys::FcitxCandidateWord);
 impl CandidateWord {
     pub fn new<T, U>(
-        word: &String,
+        word: &str,
         word_type: MessageType,
         _extra: Option<&String>,
         extra_type: MessageType,
@@ -298,7 +298,7 @@ impl CandidateWord {
         _owner: Option<&mut T>,
         _private: Option<&mut U>,
     ) -> Self {
-        let word_cstr = CString::new((*word).clone()).unwrap();
+        let word_cstr = CString::new(word).unwrap();
         // free() by fcitx
         let word_dup = unsafe { fcitx_sys::strdup(word_cstr.as_ptr()) };
 
@@ -322,10 +322,10 @@ impl CandidateWord {
 // Messages
 pointer_wrapper!(Messages, FcitxMessages);
 impl Messages {
-    pub fn add_message_at_last(&self, msg: MessageType, txt: &String) {
+    pub fn add_message_at_last(&self, msg: MessageType, txt: &str) {
         let handle = self.0;
         let format = CString::new("%s").unwrap();
-        let arg = CString::new((*txt).clone()).unwrap();
+        let arg = CString::new(txt).unwrap();
         unsafe {
             fcitx_sys::FcitxMessagesAddMessageAtLast(
                 handle,

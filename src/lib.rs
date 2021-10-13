@@ -475,7 +475,7 @@ impl IMInstance for FcitxTCode {
 
 const MAZEGAKI_DIC: &'static str = "/home/naota/tcode/mazegaki.dic";
 
-fn split_char_at(text: &String, n: usize) -> (String, String) {
+fn split_char_at(text: &str, n: usize) -> (String, String) {
     let pre = text.chars().take(n).collect::<String>();
     let post = text.chars().skip(n).collect::<String>();
     (pre, post)

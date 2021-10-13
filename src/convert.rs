@@ -41,7 +41,7 @@ impl error::Error for DictionaryParseError {
     }
 }
 
-fn parse_mazegaki_line(line: &String) -> DictionaryParseResult<(String, Vec<String>)> {
+fn parse_mazegaki_line(line: &str) -> DictionaryParseResult<(String, Vec<String>)> {
     let mut iter0 = line.split(' ');
     let key = iter0.next().ok_or(DictionaryParseError::NoKeyString)?;
 

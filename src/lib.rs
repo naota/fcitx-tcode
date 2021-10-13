@@ -306,10 +306,10 @@ impl FcitxTCode {
                     if 20 <= *n && *n < 30 {
                         match self.convert_info {
                             None => None,
-                            Some(ref info) => match info.kanjis.get((*n - 20) as usize) {
-                                None => None,
-                                Some(posttxt) => Some(pretxt + &posttxt),
-                            },
+                            Some(ref info) => info
+                                .kanjis
+                                .get((*n - 20) as usize)
+                                .map(|posttxt| pretxt + posttxt),
                         }
                     } else {
                         None

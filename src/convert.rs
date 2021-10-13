@@ -49,7 +49,7 @@ fn parse_mazegaki_line(line: &String) -> DictionaryParseResult<(String, Vec<Stri
     let iter1 = rest.split_terminator('/');
     let v: Vec<String> = iter1.skip(1).map(String::from).collect();
     if v.is_empty() {
-        Err(DictionaryParseError::NoConvertStrings)?;
+        return Err(DictionaryParseError::NoConvertStrings.into());
     }
     Ok((key.to_string(), v))
 }

@@ -143,7 +143,8 @@ impl FcitxTCode {
     fn set_preedit_tcode(&self) -> usize {
         let txt = &self.preedit;
         if !txt.is_empty() {
-            self.preedit_target().add_message_at_last(MessageType::INPUT, txt);
+            self.preedit_target()
+                .add_message_at_last(MessageType::INPUT, txt);
         }
         txt.len()
     }

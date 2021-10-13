@@ -13,7 +13,7 @@ lazy_static! {
     };
 }
 
-pub const _QWERTY: &'static [key::KeySym] = &[
+pub const _QWERTY: &[key::KeySym] = &[
     // 1st row
     key::Key_1, // 0
     key::Key_2,

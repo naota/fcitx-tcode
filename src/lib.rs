@@ -477,7 +477,7 @@ impl IMInstance for FcitxTCode {
     }
 }
 
-const MAZEGAKI_DIC: &'static str = "/home/naota/tcode/mazegaki.dic";
+const MAZEGAKI_DIC: &str = "/home/naota/tcode/mazegaki.dic";
 
 fn split_char_at(text: &str, n: usize) -> (String, String) {
     let pre = text.chars().take(n).collect::<String>();

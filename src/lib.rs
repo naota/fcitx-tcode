@@ -303,12 +303,15 @@ impl FcitxTCode {
             key::Key_a..=key::Key_z | key::Key_semicolon => match QWERTY.get(&keysym) {
                 None => None,
                 Some(n) => {
-                    if 20 <= *n && *n < 30 {
+                    // The candidate selecting line.
+                    const CANDIDATE_START: u8 = 20;
+                    const CANDIDATE_MAX: u8 = 30;
+                    if CANDIDATE_START <= *n && *n < CANDIDATE_MAX {
                         match self.convert_info {
                             None => None,
                             Some(ref info) => info
                                 .kanjis
-                                .get((*n - 20) as usize)
+                                .get((*n - CANDIDATE_START) as usize)
                                 .map(|posttxt| pretxt + posttxt),
                         }
                     } else {

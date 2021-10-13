@@ -57,6 +57,8 @@ macro_rules! declare_imclass {
             Box::into_raw(im) as *mut _ as *mut ::std::ffi::c_void
         }
 
+        /// # Safety
+        /// This functions is intended to only be called from fcitx.
         pub unsafe extern "C" fn _ime_destroy(ptr: *mut ::std::ffi::c_void) {
             let ptr = ptr as *mut $im_type;
             (*ptr).destroy();

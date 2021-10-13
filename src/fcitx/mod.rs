@@ -109,7 +109,7 @@ impl FcitxInstance {
     }
 
     pub fn commit_string(&self, txt: &String) {
-        if txt.len() == 0 {
+        if txt.is_empty() {
             return
         }
 

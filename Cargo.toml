@@ -7,7 +7,7 @@ authors = ["Naohiro Aota"]
 libc = "0.2"
 bitflags = "0.8"
 lazy_static = "1.2"
-unicode-jp = "0.3"
+unicode-jp = "0.4"
 
 [dependencies.fcitx-sys]
 path = "fcitx-sys"

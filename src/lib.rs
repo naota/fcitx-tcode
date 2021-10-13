@@ -56,12 +56,14 @@ impl Default for InputMode {
 
 enum ConvertMode {
     EXACT,
+    #[allow(dead_code)]
     INFLECTION,
 }
 
 struct ConvertInfo {
     start: usize,
     kanjis: Vec<String>,
+    #[allow(dead_code)]
     mode: ConvertMode,
 }
 struct FcitxTCode {

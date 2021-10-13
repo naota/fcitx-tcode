@@ -271,7 +271,7 @@ impl FcitxTCode {
         }
 
         self.last_is_space = keysym == key::Key_space;
-        return InputReturnValue::FLAG_FORWARD_KEY;
+        InputReturnValue::FLAG_FORWARD_KEY
     }
 
     fn do_input_convert(&mut self, keysym: KeySym, _state: c_uint) -> InputReturnValue {
@@ -443,7 +443,7 @@ impl IMInstance for FcitxTCode {
         match self.convert_info {
             None => {
                 self.update_preedit();
-                return InputReturnValue::DISPLAY_CANDWORDS;
+                InputReturnValue::DISPLAY_CANDWORDS
             }
             Some(ref info) => {
                 self.candidate_list.set_page_size(10);

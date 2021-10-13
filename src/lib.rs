@@ -241,7 +241,7 @@ impl FcitxTCode {
     }
 
     // TODO: use reference
-    fn mazegaki_convert<'a, I>(&mut self, iter: I) -> Option<ConvertInfo>
+    fn mazegaki_convert<I>(&mut self, iter: I) -> Option<ConvertInfo>
     where
         I: Iterator<Item = usize>,
     {
